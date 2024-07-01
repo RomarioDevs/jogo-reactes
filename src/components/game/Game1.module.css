@@ -1,0 +1,85 @@
+.gameContainer {
+    margin: 1.5rem 13rem;
+    display: flex;
+    justify-content: center; /* Espaço entre os filhos */
+    gap: 5rem;
+    align-items: center; /* Centraliza verticalmente */
+    height: auto; /* Ajuste conforme necessário */
+    width: 80%;
+    padding: 0 2rem; /* Espaçamento horizontal */
+    border: 2px solid #ccc; /* Borda de 2px sólida cinza */
+  }
+  .controls {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Alinha os itens à direita */
+  }
+  
+  .controls > div {
+    margin-bottom: 1rem; /* Espaçamento entre os elementos */
+  }
+  
+  .controls label{
+    font-weight: 400;
+    font-size: 5rem;
+    margin: 1rem;
+  }
+  
+  .inputWrapper {
+    display: flex;
+    align-items: center;
+  }
+  
+  .inputCircle {
+    width: 5rem; /* Tamanho do círculo */
+    height: 5rem; /* Tamanho do círculo */
+    border-radius: 50%; /* Bordas arredondadas para criar um círculo */
+    text-align: center; /* Alinha o texto centralmente */
+    font-size: 3rem; /* Tamanho da fonte */
+    padding: 0; /* Remove o preenchimento padrão */
+    margin: 1rem; /* Espaçamento à direita */
+  }
+  
+ 
+  
+.inputButtons {
+    margin-top: 0.5rem; /* Espaçamento acima dos botões */
+    border-radius: 10%;
+    width: 6rem;
+    height: 3rem;
+    font-size: 2rem;
+    cursor: pointer;
+    background-color: #007bff;
+    transition: .5s;
+    align-items: center;
+    justify-items: center;
+  }
+
+  .button2{
+    margin-top: 0.5rem; /* Espaçamento acima dos botões */
+    border-radius: 5px;
+    width: 10rem;
+    height: 4rem;
+    font-size: 2rem;
+    cursor: pointer;
+    background-color: #007bff;
+    transition: .5s;
+  }
+
+  .button2:hover{
+    background-color: aqua;
+  }
+  
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(5, 150px); /* 5 quadrados na horizontal de 150px cada */
+    grid-template-rows: repeat(6, 150px); /* 6 quadrados na vertical de 150px cada */
+    gap: 3px; /* Espaçamento entre os quadrados */
+  }
+  
+  .square {
+    width: 150px;
+    height: 150px;
+    border: 1px solid #007bff;
+  }
+  

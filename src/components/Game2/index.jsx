@@ -78,18 +78,18 @@ const Game1 = () => {
                   if (iterations > 1 && running) {
                     setTimeout(() => {
                       startGame(); // Inicia a próxima rodada se ainda estiver rodando
-                    }, 0); // Espera 1 segundo para iniciar a próxima rodada
+                    }, 100); // Espera 1 segundo para iniciar a próxima rodada
                   } else {
                     setRunning(false); // Para a execução quando as iterações chegarem a zero ou se foi parado
                   }
                 }
               }, 25);
-            }, 4000); // Espera 1 segundo após os quadrados se esvaziarem
+            }, 3450); // Espera 1 segundo após os quadrados se esvaziarem
           }
         }, 25);
 
         setCurrentInterval(interval);
-      }, 4100); // Intervalo de 2 segundos para mudança de cores
+      }, 3500); // Intervalo de 2 segundos para mudança de cores
     } else {
       setRunning(false);
     }
@@ -110,7 +110,7 @@ const Game1 = () => {
     if (allSquaresFilled) {
       const timeout = setTimeout(() => {
         setSquareColors(initialColors);
-      }, 5000); // Espera 3 segundos antes de esvaziar os quadrados
+      },3000); // Espera 3 segundos antes de esvaziar os quadrados
       return () => clearTimeout(timeout);
     }
   }, [allSquaresFilled, initialColors]);

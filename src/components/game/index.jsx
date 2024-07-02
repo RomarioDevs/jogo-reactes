@@ -74,19 +74,23 @@ const Game1 = () => {
     <div className={styles.gameContainer}>
       <div className={styles.controls}>
         <div className={styles.inputWrapper}>
-          <button className={styles.inputButtons} onClick={incrementIterations}>+5</button>
-          <input
-            type="tetx"
-            id="iterations"
-            className={styles.inputCircle}
-            value={iterations}
-            onChange={handleInputChange}
-            readOnly
-          />
-          <button className={styles.inputButtons} onClick={decrementIterations}>-5</button>
+          <button className={styles.inputButtons} onClick={decrementIterations} disabled={running}>-5</button>
+          <div className={styles.rodas}>
+            <p>Rodadas</p>
+            <input
+              type="text"
+              id="iterations"
+              className={styles.inputCircle}
+              value={iterations}
+              onChange={handleInputChange}
+              readOnly
+            />
+          </div>
+          <button className={styles.inputButtons} onClick={incrementIterations} disabled={running}>+5</button>
         </div>
-        <button className={styles.button2} onClick={startGame}>Iniciar</button>
-        <button className={styles.button2} onClick={resetGame}>Reiniciar</button>
+        <button className={styles.button2} onClick={startGame} disabled={running}>Iniciar</button>
+        <button className={styles.button2} onClick={stopGame} disabled={!running}>Parar</button>
+        <button className={styles.button2} onClick={resetGame} disabled={running}>Reiniciar</button>
       </div>
       <div className={styles.grid}>
         {squares}

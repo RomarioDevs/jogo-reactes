@@ -8,6 +8,7 @@ const Game1 = () => {
   const [running, setRunning] = useState(false); // Estado para controlar se está rodando ou não
   const [currentInterval, setCurrentInterval] = useState(null); // Estado para armazenar o intervalo atual
   const [stopClicked, setStopClicked] = useState(false); // Estado para verificar se o botão de parar foi clicado
+  const [allSquaresFilled, setAllSquaresFilled] = useState(false); // Estado para verificar se todos os quadrados estão preenchidos
 
   function getRandomColor() {
     const letters = '0123456789ABCDEF';
@@ -15,8 +16,13 @@ const Game1 = () => {
     for (let i = 0; i < 6; i++) {
       color += letters[Math.floor(Math.random() * 16)];
     }
-    return color;
+    return color === '#ffffff' ? getRandomColor() : color; // Evita a cor branca
   }
+
+  // Função para verificar se todos os slots estão preenchidos com cores diferentes de branco
+  const allFilled = () => {
+    return squareColors.every(color => color !== '#ffffff');
+  };
 
   // Função para iniciar a execução com o número de iterações especificado
   const startGame = () => {
@@ -46,12 +52,13 @@ const Game1 = () => {
         const newColors = Array.from({ length: 30 }, () => '#ffffff');
 
         const timer = setInterval(() => {
-          if (index < 30 && !stopClicked) { // Verifica se o botão de parar não foi clicado
+          if (index < 30 && !stopClicked) {
             newColors[index] = getRandomColor();
             setSquareColors([...newColors]);
             index++;
           } else {
             clearInterval(timer);
+
             setTimeout(() => {
               const fadeTimer = setInterval(() => {
                 let faded = false;
@@ -66,30 +73,52 @@ const Game1 = () => {
                 if (!faded) {
                   clearInterval(fadeTimer);
                   setIterations(prevIterations => prevIterations - 1);
+
                   // Verifica se ainda há iterações restantes
                   if (iterations > 1 && running) {
-                    startGame(); // Inicia a próxima rodada se ainda estiver rodando
+                    setTimeout(() => {
+                      startGame(); // Inicia a próxima rodada se ainda estiver rodando
+                    }, 0); // Espera 1 segundo para iniciar a próxima rodada
                   } else {
                     setRunning(false); // Para a execução quando as iterações chegarem a zero ou se foi parado
                   }
                 }
               }, 25);
-            }, 3000);
+            }, 4000); // Espera 1 segundo após os quadrados se esvaziarem
           }
         }, 25);
 
-        setCurrentInterval(interval); // Armazena o intervalo atual
-      }, 4000);
+        setCurrentInterval(interval);
+      }, 4100); // Intervalo de 2 segundos para mudança de cores
     } else {
-      setRunning(false); // Para a execução se as iterações chegarem a zero ou se foi parado
+      setRunning(false);
     }
 
-    // Limpa o intervalo ao desmontar o componente ou ao parar manualmente
     return () => {
       clearInterval(interval);
       clearInterval(currentInterval);
     };
-  }, [running, iterations, squareColors, currentInterval, stopClicked]); // Dependências: `running`, `iterations`, `squareColors`, `currentInterval` e `stopClicked`
+  }, [running, iterations, squareColors, currentInterval, stopClicked]);
+
+  // Efeito para verificar se todos os quadrados estão preenchidos
+  useEffect(() => {
+    setAllSquaresFilled(allFilled());
+  }, [squareColors]);
+
+  // Efeito para esvaziar os quadrados após serem preenchidos por 3 segundos, se todos estiverem preenchidos
+  useEffect(() => {
+    if (allSquaresFilled) {
+      const timeout = setTimeout(() => {
+        setSquareColors(initialColors);
+      }, 5000); // Espera 3 segundos antes de esvaziar os quadrados
+      return () => clearTimeout(timeout);
+    }
+  }, [allSquaresFilled, initialColors]);
+
+  // Efeito para garantir que o valor do input seja atualizado ao final de cada rodada
+  useEffect(() => {
+    document.getElementById('iterations').value = iterations;
+  }, [iterations]);
 
   // Função para reiniciar
   const resetGame = () => {
@@ -107,13 +136,11 @@ const Game1 = () => {
   };
 
   const incrementIterations = () => {
-    setIterations(prevIterations => prevIterations + 5);
+    setIterations(prevIterations => (prevIterations + 5 <= 50 ? prevIterations + 5 : 50));
   };
 
   const decrementIterations = () => {
-    if (iterations > 0) {
-      setIterations(prevIterations => prevIterations - 5);
-    }
+    setIterations(prevIterations => (prevIterations - 5 >= 0 ? prevIterations - 5 : 0));
   };
 
   // Função para suavizar a transição de cor para branco
@@ -132,14 +159,14 @@ const Game1 = () => {
   };
 
   const squares = squareColors.map((color, index) => (
-    <div key={index} className={styles.square} style={{ backgroundColor: color }}></div>
+    <div key={index} className={styles.square} style={{ backgroundColor: color, border: color === '#ffffff' ? '1px solid #007bff' : 'none' }}></div>
   ));
 
   return (
     <div className={styles.gameContainer}>
       <div className={styles.controls}>
         <div className={styles.inputWrapper}>
-          <button className={styles.inputButtons} onClick={decrementIterations}>-5</button>
+          <button className={styles.inputButtons} onClick={decrementIterations} disabled={running}>-5</button>
           <input
             type="text"
             id="iterations"
@@ -148,11 +175,11 @@ const Game1 = () => {
             onChange={handleInputChange}
             readOnly
           />
-          <button className={styles.inputButtons} onClick={incrementIterations} >+5</button>
+          <button className={styles.inputButtons} onClick={incrementIterations} disabled={running}>+5</button>
         </div>
-        <button className={styles.button2} onClick={startGame}>Iniciar</button>
-        <button className={styles.button2} onClick={stopGame}>Parar</button> {/* Botão para parar o jogo */}
-        <button className={styles.button2} onClick={resetGame}>Reiniciar</button>
+        <button className={styles.button2} onClick={startGame} disabled={running}>Iniciar</button>
+        <button className={styles.button2} onClick={stopGame} disabled={!running}>Parar</button>
+        <button className={styles.button2} onClick={resetGame} disabled={running}>Reiniciar</button>
       </div>
       <div className={styles.grid}>
         {squares}

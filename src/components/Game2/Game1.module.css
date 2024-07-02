@@ -21,8 +21,10 @@
   }
   
   .inputWrapper {
+    justify-items: center;
     display: flex;
     align-items: center;
+    border: #007bff solid 1px;
   }
   
   .inputCircle {
@@ -36,7 +38,7 @@
   }
   
   .inputButtons {
-    margin-top: 0.5rem;
+    margin: 1rem;
     border-radius: 10%;
     width: 6rem;
     height: 3rem;
@@ -74,3 +76,31 @@
     border: 1px solid #007bff;
   }
   
+
+  .innerSquare {
+    width: calc(100% - 2px);
+    height: calc(100% - 2px);
+    background-color: inherit;
+  }
+
+  .rodas{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .rodas p{
+    font-size: 2rem;
+
+  }
+
+
+
+  
+  /*  const squares = squareColors.map((color, index) => (
+    <div key={index} className={styles.square} style={{ borderColor: color }}>
+      {color !== '#ffffff' && <div className={styles.innerSquare} style={{ backgroundColor: color }}></div>}
+    </div>
+  ));
+   */
